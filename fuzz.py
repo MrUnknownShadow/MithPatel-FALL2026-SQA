@@ -366,7 +366,10 @@ def where(tb):
 
 
 def short(case):
-    s = repr(case)
+    try:
+        s = repr(case)
+    except RecursionError:  # the input itself is the deep structure
+        return '<nested too deep to print>'
     return s if len(s) <= 300 else s[:300] + '...<%d chars>' % len(s)
 
 
