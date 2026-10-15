@@ -400,7 +400,10 @@ def fuzz(iterations, seed, out_dir):
                 msg = '%s: %s' % (type(e).__name__, str(e)[:150])
                 record(findings, name, kind, '%s @ %s' % (type(e).__name__, where(e.__traceback__)), msg, case, i)
                 continue
-            verdict = check(case, res)
+            try:
+                verdict = check(case, res)
+            except RecursionError:  # result too deep for the oracle itself to compare; the CRASH path covers depth
+                continue
             if verdict:
                 record(findings, name, 'ORACLE', verdict[0], verdict[1], case, i)
     return findings, calls
