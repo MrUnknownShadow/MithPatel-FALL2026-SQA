@@ -1,0 +1,10 @@
+pandas
+numpy
+PyYAML
+ruamel.yaml
+requests
+typer
+sarif-om
+jschema-to-python
+pytest
+flake8

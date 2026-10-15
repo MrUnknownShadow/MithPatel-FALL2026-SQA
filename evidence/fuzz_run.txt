@@ -1,0 +1,150 @@
+fuzzing 10 methods x 300 iterations, seed=20261015
+# Fuzz report
+
+seed=20261015, 300 iterations x 10 targets, 20 unique finding(s)
+
+| Target | Kind | Finding | Hits |
+|---|---|---|---|
+| `parser.checkIfValidK8SYaml` | CRASH | IndexError @ parser.py:388 in getSingleDict4MultiDocs | 2 |
+| `parser.checkIfValidK8SYaml` | CRASH | RecursionError @ <frozen _collections_abc>:1026 in __iter__ | 3 |
+| `parser.checkIfValidK8SYaml` | CRASH | RecursionError @ parser.py:174 in loadMultiYAML | 5 |
+| `parser.checkIfValidK8SYaml` | CRASH | TypeError @ parser.py:263 in find_json_path_keys | 38 |
+| `parser.count_initial_comment_line` | CRASH | UnicodeDecodeError @ <frozen codecs>:322 in decode | 44 |
+| `parser.find_json_path_keys` | CRASH | RecursionError @ parser.py:247 in find_json_path_keys | 5 |
+| `parser.find_json_path_keys` | CRASH | TypeError @ parser.py:263 in find_json_path_keys | 59 |
+| `parser.find_json_path_keys` | ORACLE | mapping-type-inconsistent | 30 |
+| `parser.getKeyRecursively` | ORACLE | depth-leak | 12 |
+| `parser.getKeyRecursively` | ORACLE | keys-dropped | 115 |
+| `parser.getSingleDict4MultiDocs` | CRASH | IndexError @ parser.py:388 in getSingleDict4MultiDocs | 30 |
+| `parser.getSingleDict4MultiDocs` | CRASH | TypeError @ parser.py:412 in getSingleDict4MultiDocs | 4 |
+| `parser.getValsFromKey` | ORACLE | lists-not-traversed | 63 |
+| `parser.getValuesRecursively` | CRASH | RecursionError @ parser.py:84 in getValuesRecursively | 7 |
+| `parser.getValuesRecursively` | CRASH | RecursionError @ parser.py:88 in getValuesRecursively | 3 |
+| `parser.keyMiner` | CRASH | RecursionError @ parser.py:45 in keyMiner | 6 |
+| `parser.keyMiner` | ORACLE | type-confusion | 3 |
+| `parser.loadMultiYAML` | CRASH | RecursionError @ <frozen _collections_abc>:1026 in __iter__ | 3 |
+| `parser.loadMultiYAML` | CRASH | RecursionError @ parser.py:174 in loadMultiYAML | 11 |
+| `parser.loadMultiYAML` | CRASH | TypeError @ parser.py:263 in find_json_path_keys | 28 |
+
+### `parser.checkIfValidK8SYaml` - CRASH: IndexError @ parser.py:388 in getSingleDict4MultiDocs
+IndexError: list index out of range
+```
+smallest input: b'[]\n'
+```
+
+### `parser.checkIfValidK8SYaml` - CRASH: RecursionError @ <frozen _collections_abc>:1026 in __iter__
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: b'&a [*a]'
+```
+
+### `parser.checkIfValidK8SYaml` - CRASH: RecursionError @ parser.py:174 in loadMultiYAML
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: b'{a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a: {a...<8003 chars>
+```
+
+### `parser.checkIfValidK8SYaml` - CRASH: TypeError @ parser.py:263 in find_json_path_keys
+TypeError: expected string or bytes-like object, got 'ScalarFloat'
+```
+smallest input: b"1.5: ''\n"
+```
+
+### `parser.count_initial_comment_line` - CRASH: UnicodeDecodeError @ <frozen codecs>:322 in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 1: invalid start byte
+```
+smallest input: b'\x00\xff\xfe'
+```
+
+### `parser.find_json_path_keys` - CRASH: RecursionError @ parser.py:247 in find_json_path_keys
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: [[[[{'a': {'a': [[{'a': [{'a': [[[{'a': {'a': [{'a': [[[{'a': [[[{'a': {'a': {'a': {'a': [{'a': [{'a': [[{'a': [[{'a': [[[{'a': [{'a': {'a': {'a': {'a': {'a': [[[[{'a': [[{'a': {'a': {'a': [[[{'a': {'a': {'a': {'a': {'a': [{'a': [[{'a': [{'a': {'a': {'a': {'a': [{'a': [{'a': [{'a': {'a': [[{'a': {'a...<5287 chars>
+```
+
+### `parser.find_json_path_keys` - CRASH: TypeError @ parser.py:263 in find_json_path_keys
+TypeError: expected string or bytes-like object, got 'float'
+```
+smallest input: ['true', [{'null': [True, 0.04949988981238773, 'spec', -1], 1.5: -1}], [{}]]
+```
+
+### `parser.find_json_path_keys` - ORACLE: mapping-type-inconsistent
+key_jsonpath_mapping['privileged'] is a str, not a list, once the key repeats; earlier paths are overwritten and their line numbers lost
+```
+smallest input: {'true': {'privileged': {}}, 'privileged': -1, 'kind': {}}
+```
+
+### `parser.getKeyRecursively` - ORACLE: depth-leak
+key 'token' reported at depth 3, real depths [2]: depth_ is incremented but never restored for later siblings
+```
+smallest input: {0: {'username': {'name': {}, 'token': False}, 0: 'x'}}
+```
+
+### `parser.getKeyRecursively` - ORACLE: keys-dropped
+keys ['http://a.b'] nested in the tree are never returned (dict keys whose value is a list of scalars are skipped)
+```
+smallest input: [False, {'http://a.b': []}]
+```
+
+### `parser.getSingleDict4MultiDocs` - CRASH: IndexError @ parser.py:388 in getSingleDict4MultiDocs
+IndexError: list index out of range
+```
+smallest input: [[]]
+```
+
+### `parser.getSingleDict4MultiDocs` - CRASH: TypeError @ parser.py:412 in getSingleDict4MultiDocs
+TypeError: unsupported operand type(s) for +: 'bool' and 'str'
+```
+smallest input: [{0: 4.220302405866328}, {'hostNetwork': False}, {False: [{'http://a.b': None, 'apiVersion': []}]}, 'scalar']
+```
+
+### `parser.getValsFromKey` - ORACLE: lists-not-traversed
+expected 1 value(s) for key ' ', got 0 (lists nested in lists and a list at the document root are not searched)
+```
+smallest input: (['kind', -3, [{' ': {}, 'containers': 2}, 1, 6.636221024192572]], ' ')
+```
+
+### `parser.getValuesRecursively` - CRASH: RecursionError @ parser.py:84 in getValuesRecursively
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: [{'a': {'a': [{'a': {'a': {'a': [[{'a': [[{'a': [{'a': {'a': [[{'a': {'a': {'a': {'a': {'a': {'a': [[{'a': {'a': {'a': [[[{'a': {'a': [{'a': {'a': {'a': {'a': [[{'a': {'a': [[{'a': [[{'a': [{'a': [{'a': {'a': {'a': [{'a': [[{'a': {'a': [{'a': {'a': [{'a': [[[{'a': {'a': [[{'a': [[[[[[[{'a': {'a': {'...<5698 chars>
+```
+
+### `parser.getValuesRecursively` - CRASH: RecursionError @ parser.py:88 in getValuesRecursively
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: {'a': [{'a': [{'a': {'a': [{'a': [[[[[[{'a': [{'a': {'a': {'a': [[{'a': [[{'a': {'a': {'a': {'a': [{'a': [[{'a': {'a': {'a': {'a': [[[{'a': {'a': [[{'a': [[{'a': [[{'a': {'a': {'a': [[{'a': [{'a': [[[[{'a': [[{'a': [[{'a': {'a': [{'a': [[{'a': [{'a': {'a': [{'a': {'a': [{'a': [[[{'a': {'a': [{'a': {...<6827 chars>
+```
+
+### `parser.keyMiner` - CRASH: RecursionError @ parser.py:45 in keyMiner
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: ({'a': [{'a': {'a': [[{'a': [{'a': {'a': [[{'a': [{'a': {'a': {'a': {'a': [[{'a': {'a': {'a': [{'a': [{'a': {'a': {'a': {'a': {'a': {'a': [[[{'a': [{'a': {'a': [{'a': [[[[[{'a': [{'a': [{'a': {'a': [[[[[[{'a': {'a': [[[[[{'a': [[{'a': [{'a': {'a': {'a': {'a': [{'a': {'a': {'a': {'a': [{'a': {'a': {'...<4620 chars>
+```
+
+### `parser.keyMiner` - ORACLE: type-confusion
+searched True (bool) but path ends in 1 (int): True/1 and False/0 compare equal
+```
+smallest input: ([{'Secret': {}, '': [{'username': 1, 'x': False, True: 'secret'}, ['\u202e☃\x00', None], 'token'], 'a.b': {}}], True)
+```
+
+### `parser.loadMultiYAML` - CRASH: RecursionError @ <frozen _collections_abc>:1026 in __iter__
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: b'&a [*a]'
+```
+
+### `parser.loadMultiYAML` - CRASH: RecursionError @ parser.py:174 in loadMultiYAML
+RecursionError: maximum recursion depth exceeded
+```
+smallest input: b'- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ...<1604 chars>
+```
+
+### `parser.loadMultiYAML` - CRASH: TypeError @ parser.py:263 in find_json_path_keys
+TypeError: expected string or bytes-like object, got 'ScalarFloat'
+```
+smallest input: b'a: b\n---\n1.5: x\n---\n1.5: y\n'
+```
+
+
+20 unique finding(s) in 16.8s

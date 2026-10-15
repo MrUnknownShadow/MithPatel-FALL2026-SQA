@@ -1,0 +1,28 @@
+testMultidoc2SingleDic (TEST_PARSING.TestParseMultidocs.testMultidoc2SingleDic) ... ok
+testMultidocV1 (TEST_PARSING.TestParseMultidocs.testMultidocV1) ... ok
+testMultidocV2 (TEST_PARSING.TestParseMultidocs.testMultidocV2) ... ok
+testK8SYAMLValidity1 (TEST_PARSING.TestParsing.testK8SYAMLValidity1) ... ok
+testK8SYAMLValidity2 (TEST_PARSING.TestParsing.testK8SYAMLValidity2) ... ok
+testK8SYAMLValidity3 (TEST_PARSING.TestParsing.testK8SYAMLValidity3) ... ok
+testK8SYAMLValidity4 (TEST_PARSING.TestParsing.testK8SYAMLValidity4) ... ok
+testK8SYAMLValidity5 (TEST_PARSING.TestParsing.testK8SYAMLValidity5) ... ok
+testK8SYAMLValidity6 (TEST_PARSING.TestParsing.testK8SYAMLValidity6) ... ok
+testK8SYAMLValidity7 (TEST_PARSING.TestParsing.testK8SYAMLValidity7) ... ok
+testK8SYAMLValidity8 (TEST_PARSING.TestParsing.testK8SYAMLValidity8) ... ok
+testK8SYAMLValidity9 (TEST_PARSING.TestParsing.testK8SYAMLValidity9) ... ok
+testKeyCount (TEST_PARSING.TestParsing.testKeyCount) ... ok
+testKeyExtraction (TEST_PARSING.TestParsing.testKeyExtraction) ... ok
+testKeyPath1 (TEST_PARSING.TestParsing.testKeyPath1) ... ok
+testKeyPath2 (TEST_PARSING.TestParsing.testKeyPath2) ... ok
+testKeyPathLength (TEST_PARSING.TestParsing.testKeyPathLength) ... ok
+testValueCount (TEST_PARSING.TestParsing.testValueCount) ... ok
+testValueFromKey1 (TEST_PARSING.TestParsing.testValueFromKey1) ... ok
+testValueFromKey2 (TEST_PARSING.TestParsing.testValueFromKey2) ... ok
+testValueFromKey3 (TEST_PARSING.TestParsing.testValueFromKey3) ... ok
+testValueFromKey4 (TEST_PARSING.TestParsing.testValueFromKey4) ... ok
+testValueFromKey5 (TEST_PARSING.TestParsing.testValueFromKey5) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.050s
+
+OK
